@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Name Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #character-image {
+            width: 300px; /* Adjust the width as needed */
+            height: 300px; /* Adjust the height as needed */
+        }
+
+        #character-name {
+            margin-top: 10px;
+        }
+
+        #timer {
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <img id="character-image" src="" alt="Character Image">
+    <label for="character-name">Enter the name of the character:</label>
+    <input type="text" id="character-name" placeholder="Type here" onkeydown="if (event.key === 'Enter') checkAnswer()">
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="feedback"></p>
+    <p id="timer"></p>
+</div>
+
+<script>
+    // Function to remove duplicates based on character names
+    function removeDuplicates(array) {
+        return array.filter((character, index, self) =>
+            index === self.findIndex((c) => c.name === character.name)
+        );
+    }
+
+    // Your initial characters array
+    var characters = [
+        { name: "كاكاشي", image: "https://i.imgur.com/nnFU3Ms.png" },
+        { name: "روي", image: "https://i.imgur.com/bavnkCo.png" },
+        { name: "رين", image: "https://i.imgur.com/bEpoxO7.png" },
+        { name: "موراساكيبارا", image: "https://i.imgur.com/0CaBxDI.jpeg" },
+        { name: "روجر", image: "https://telegra.ph/file/0c0910118cb2aa31750fe.jpg" },
+        { name: "ليفاي", image: "https://telegra.ph/file/f7d2beace9c9cfe99a5a1.jpg" },
+        { name: "جيغن", image: "https://telegra.ph/file/d632cc5d68d473b703513.jpg" },
+        { name: "جيغن", image: "https://telegra.ph/file/61f7a03410c9bca18e250.jpg" },
+        { name: "غوجو", image: "https://telegra.ph/file/f3b2f9e862e1352d4fd94.jpg" },
+        { name: "ايتاشي", image: "https://telegra.ph/file/024188143384a478a4025.jpg" },
+        { name: "يوجي", image: "https://telegra.ph/file/dfb205ba8b1557aa16460.jpg" },
+        // Add more characters as needed
+    ];
+
+    // Additional characters
+    var newCharacters = [
+        { name: "اثي", image: "https://telegra.ph/file/2ec9b4672f239fe33815e.jpg" },
+        { name: "دابي", image: "https://telegra.ph/file/3b70705ccdf69b1c26876.jpg" },
+        { name: "سوكونا", image: "https://telegra.ph/file/3d9ad2c5bd1fdfdf99289.jpg" },
+        { name: "ساشا", image: "https://telegra.ph/file/f19aba8df3f04053d7499.jpg" },
+        { name: "مايكي", image: "https://telegra.ph/file/499ee02976eb2ba0496d2.jpg" },
+        { name: "هانما", image: "https://telegra.ph/file/19b47237aa6e79decf992.jpg" },
+        { name: "ناوفومي", image: "https://telegra.ph/file/0ecdac95121878697de28.jpg" },
+        { name: "زورا", image: "https://telegra.ph/file/ad37d66dd6cd4084545ee.jpg" },
+        { name: "فوتارو", image: "https://telegra.ph/file/cb44e32c989aa9d83df38.jpg" },
+        { name: "رافتاليا", image: "https://telegra.ph/file/45222bb5b6651b9c6d3fa.jpg" },
+        { name: "تشوسو", image: "https://telegra.ph/file/f6bbfced2da019ec056be.jpg" },
+        { name: "كوزيت", image: "https://telegra.ph/file/dd43516e691d68957bbd4.jpg" },
+        { name: "هاناكو", image: "https://telegra.ph/file/f43486b3cb1a567c3dbd6.jpg" },
+        { name: "ايرين", image: "https://telegra.ph/file/8959049b283504164d44c.jpg" },
+        { name: "تشويا", image: "https://telegra.ph/file/fd8bd3e3fe03f578b6486.jpg" },
+        // Add more characters as needed
+    ];
+
+    // Combine and remove duplicates
+    characters = removeDuplicates([...characters, ...newCharacters]);
+
+    var startTime;
+    var currentCharacterIndex;
+
+    function startGame() {
+        currentCharacterIndex = Math.floor(Math.random() * characters.length);
+        displayCharacter();
+        setInterval(updateTimer, 100); // Update the timer every 100 milliseconds
+    }
+
+    function displayCharacter() {
+        startTime = new Date().getTime(); // Reset start time for each new character
+        document.getElementById("character-image").src = characters[currentCharacterIndex].image;
+        document.getElementById("character-name").value = "";
+    }
+
+    function checkAnswer() {
+        var endTime = new Date().getTime();
+        var timeTaken = (endTime - startTime) / 1000;
+        var userAnswer = document.getElementById("character-name").value.toLowerCase();
+        var correctAnswer = characters[currentCharacterIndex].name.toLowerCase();
+
+        if (userAnswer === correctAnswer) {
+            document.getElementById("feedback").innerHTML = "Correct! Time taken: " + timeTaken + " seconds";
+        } else {
+            document.getElementById("feedback").innerHTML = "Incorrect. Try again.";
+        }
+
+        currentCharacterIndex = Math.floor(Math.random() * characters.length);
+        displayCharacter();
+    }
+
+    function updateTimer() {
+        var endTime = new Date().getTime();
+        var timeTaken = (endTime - startTime) / 1000;
+        document.getElementById("timer").innerHTML = "Time taken: " + timeTaken.toFixed(2) + " seconds";
+    }
+
+    window.onload = startGame;
+</script>
+
+</body>
+</html>
